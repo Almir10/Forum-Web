@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <!-- Dodajte Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Dodajte vaš sopstveni CSS ako je potrebno -->
+    <link rel="stylesheet" href="path/to/your/custom.css">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>Admin Dashboard</h1>
+            <p>Welcome, admin!</p>
+
+            <!-- Forma za unos nove diskusije -->
+            <form th:action="@{/admin/addDiscussion}" method="post">
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="content">Content:</label>
+                    <textarea id="content" name="content" class="form-control" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Discussion</button>
+            </form>
+
+            <!-- Prikaz postojećih diskusija -->
+            <h2 class="mt-4">All Discussions</h2>
+            <ul class="list-group">
+                <li th:each="discussion : ${discussions}" class="list-group-item d-flex justify-content-between align-items-center">
+                    <span th:text="${discussion.title}"></span>
+                    <a th:href="@{'/admin/deleteDiscussion/' + ${discussion.id}}" class="btn btn-danger btn-sm">Delete</a>
+                </li>
+            </ul>
+        </div>
+
+
+
+        <div class="col-md-4">
+            <h2 class="mb-4">All Users</h2>
+            <ul class="list-group">
+                <li th:each="user : ${users}" class="list-group-item d-flex justify-content-between align-items-center">
+                    <span th:text="${user.username}"></span>
+                    <span th:if="${!user.active}" class="badge badge-secondary">(Deactivated)</span>
+                    <a th:if="${user.active}" th:href="@{'/admin/deactivateUser/' + ${user.id}}" class="badge badge-danger">Deactivate</a>
+                    <a th:if="${!user.active}" th:href="@{'/admin/activateUser/' + ${user.id}}" class="badge badge-success">Activate</a>
+                </li>
+            </ul>
+
+
+        </div>
+    </div>
+
+    <!-- Dugme za povratak na index.html -->
+    <a th:href="@{'/'}" class="btn btn-secondary mt-4">Back to Index</a>
+</div>
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>
